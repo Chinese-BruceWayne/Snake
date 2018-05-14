@@ -19,4 +19,4 @@
 
 8. 完成设置字符长宽速度函数，并提示现有状态
 
-<a href=https://www.bilibili.com/video/av23424491/>bilibili演示视频</a>
+<a href=https://www.bilibili.com/video/av23440462/>bilibili演示视频</a>
