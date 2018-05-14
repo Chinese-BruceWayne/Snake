@@ -1,4 +1,3 @@
-#pragma once
 #include"Function.h"
 
 Snake *head, *food;
@@ -7,9 +6,9 @@ int condition;
 int end_condition = 0;
 int score = 0, add = 1;
 Obstacle o[30];
-static const char SSymbol = 'O';
-static const char FSymbol = 'o';
-static const char WSymbol = 'H';
+char SSymbol = 'O';
+char FSymbol = 'o';
+char WSymbol = 'H';
 
 inline void Green_color()
 {                               
@@ -104,6 +103,24 @@ void Creat_obs(Obstacle o[], int n)
 	}
 }
 
+void SetSymbol()
+{
+	system("cls");
+	Set_location(30, 12);
+	cout<<"Please chose a wall symbol:";
+	cin>>WSymbol;
+	Set_location(30, 13);
+	cout<<"Please chose a snake symbol:";
+	cin>>SSymbol;
+	Set_location(30, 14);
+	cout<<"Please chose a food symbol:";
+	cin>>FSymbol;
+	Set_location(30, 15);
+	cout<<"You have correctly set the symbol.";
+	system("pause>nul");
+	system("cls");
+}
+
 void Initial()
 {
 	Snake *tail;
@@ -133,12 +150,10 @@ void Initial()
 void creat_food()
 {
 	Snake *food_1;
-	srand((unsigned)time(NULL));
 	food_1 = new Snake;
-	while ((food_1->s_x % 2) != 0)    
-	{
-		food_1->s_x = (rand() % 52) + 2;
-	}
+	do{
+		food_1->s_x = (rand() % 52) + 1;
+	}while ((food_1->s_x % 2) != 0);
 	food_1->s_y = (rand() % 24) + 1;
 	q = head;
 	while (q->next != NULL)
@@ -232,6 +247,14 @@ void Start()
 	Set_location(30, 14);
 	cout << "The snake can go through the barrier."<<endl;
 	system("pause>nul");
+	system("cls");
+	Set_location(30, 12);
+	cout<< "Would you like to set symbol?"<<endl;
+	Set_location(30, 13);
+	cout<<"(type y for yes or anything else for no.)";
+	char crl;
+	cin>>crl;
+	if( crl=='y' ) SetSymbol();
 	system("cls");
 	creatMap();
 	Initial();

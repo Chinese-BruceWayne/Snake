@@ -1,4 +1,3 @@
-#pragma once
 #include"Function.h"
 
 int Snake::Get_x()
@@ -50,13 +49,13 @@ void Snake::Can_not_crowall()
 
 }
 
-static const char SSymbol = 'O';
 void Snake::Move()
 {
 	Snake *nexthead;
 	nexthead = new Snake;
 	head->Can_not_crowall();
 
+//	cout<<'\t'<<condition<<endl<<food->s_x<<'\t'<<food->s_y<<endl;
 	if (condition == UP)
 	{
 		nexthead->s_x = head->s_x;

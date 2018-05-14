@@ -19,6 +19,9 @@ extern int end_condition;
 extern int score;
 extern int add;
 extern Obstacle o[30];
+extern char SSymbol;
+extern char FSymbol;
+extern char WSymbol;
 
 inline void Green_color();
 inline void Red_color();
@@ -27,6 +30,7 @@ inline void White_color();
 
 void Set_location(int x, int y);
 void Creat_obs(Obstacle o[], int n);
+void SetSymbol();
 void Initial();
 void creat_food();
 void creatMap();
