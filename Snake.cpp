@@ -55,7 +55,6 @@ void Snake::Move()
 	nexthead = new Snake;
 	head->Can_not_crowall();
 
-//	cout<<'\t'<<condition<<endl<<food->s_x<<'\t'<<food->s_y<<endl;
 	if (condition == UP)
 	{
 		nexthead->s_x = head->s_x;
