@@ -30,7 +30,7 @@ bool Snake::Bite_self()
 	return 0;
 }
 
-void Snake::Can_not_crowall()
+bool Snake::Can_not_crowall()
 {
 	for (int i = 0; i < 30; i++)
 	{
@@ -38,22 +38,23 @@ void Snake::Can_not_crowall()
 		{
 			end_condition = 4;
 			Die();
+			return false;
 		}
 	}
 	if ((head->s_x == 0 && head->s_y != 20) || (head->s_x == 56 && head->s_y != 6) || (head->s_y == 0 && head->s_x != 10) || (head->s_y == 26 && head->s_x != 50))
 	{
 		end_condition = 1;
-		Die();           
-
+		Die();
+		return false;
 	}
-
+	return true;
 }
 
-void Snake::Move()
+bool Snake::Move()
 {
 	Snake *nexthead;
 	nexthead = new Snake;
-	head->Can_not_crowall();
+	if( !head->Can_not_crowall() ) return false;
 
 	if (condition == UP)
 	{
@@ -228,5 +229,7 @@ void Snake::Move()
 	{
 		end_condition = 2;
 		Die();
+		return false;
 	}
+	return true;
 }

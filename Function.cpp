@@ -9,44 +9,10 @@ Obstacle o[30];
 char SSymbol = 'O';
 char FSymbol = 'o';
 char WSymbol = 'H';
+double speed = 10;
+int length = 26;
+int width = 56;
 
-inline void Green_color()
-{                               
-	HANDLE hOut;
-	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(hOut,
-		FOREGROUND_GREEN |
-		FOREGROUND_INTENSITY);
-}
-
-inline void Red_color()
-{
-	HANDLE hOut;
-	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(hOut,
-		FOREGROUND_RED |
-		FOREGROUND_INTENSITY);
-}
-
-inline void Yellow_color()
-{
-	HANDLE hOut;
-	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(hOut,
-		FOREGROUND_RED |
-		FOREGROUND_GREEN |
-		FOREGROUND_INTENSITY);
-}
-
-inline void White_color(){
-	HANDLE hOut;
-	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(hOut,
-		FOREGROUND_RED |
-		FOREGROUND_GREEN |
-		FOREGROUND_BLUE |
-		FOREGROUND_INTENSITY);
-}
 
 void Set_location(int x, int y)
 {
@@ -82,14 +48,14 @@ void Creat_obs(Obstacle o[], int n)
 		f++;
 	}
 	a = 15; b = 23; c = 8; d = 40; e = 32; f = 13;
-	for (int i = 20; i < 26; i++)
+	for (int i = 20; i < length; i++)
 	{
 		o[i].x = d;
 		o[i].y = f;
 		f++;
 	}
 	a = 15; b = 23; c = 8; d = 40; e = 44; f = 4;
-	for (int i = 26; i < 30; i++)
+	for (int i = length; i < 30; i++)
 	{
 		o[i].x = e;
 		e -= 2;
@@ -107,16 +73,49 @@ void SetSymbol()
 {
 	system("cls");
 	Set_location(30, 12);
-	cout<<"Please chose a wall symbol:";
+	cout<<"Please chose a wall symbol:"<<WSymbol<<"-->";
 	cin>>WSymbol;
 	Set_location(30, 13);
-	cout<<"Please chose a snake symbol:";
+	cout<<"Please chose a snake symbol:"<<SSymbol<<"-->";
 	cin>>SSymbol;
 	Set_location(30, 14);
-	cout<<"Please chose a food symbol:";
+	cout<<"Please chose a food symbol:"<<FSymbol<<"-->";
 	cin>>FSymbol;
 	Set_location(30, 15);
 	cout<<"You have correctly set the symbol.";
+	system("pause>nul");
+	system("cls");
+}
+
+void SetWL()
+{
+	system("cls");
+	Set_location(30, 12);
+	cout<<"Current width:"<<width<<endl;
+	Set_location(30, 13);
+	cout<<"Please chose a width:";
+	cin>>width;
+	Set_location(30, 14);
+	cout<<"Current length:"<<length<<endl;
+	Set_location(30, 15);
+	cout<<"Please chose a length:";
+	cin>>length;
+	Set_location(30, 16);
+	cout<<"You have correctly set width/length.";
+	system("pause>nul");
+	system("cls");
+}
+
+void SetSpeed()
+{
+	system("cls");
+	Set_location(30, 12);
+	cout<<"Current speed:"<<speed<<endl;
+	Set_location(30, 13);
+	cout<<"Please chose a speed:";
+	cin>>speed;
+	Set_location(30, 14);
+	cout<<"You have correctly set speed.";
 	system("pause>nul");
 	system("cls");
 }
@@ -182,27 +181,27 @@ void creat_food()
 void creatMap()
 {
 	int i;
-	for (i = 0; i<58; i += 2)
+	for (i = 0; i<width+2; i += 2)
 	{
 		Set_location(i, 0);
 		cout << WSymbol;
-		Set_location(i, 26);
+		Set_location(i, length);
 		cout << WSymbol;
 	}
 	Set_location(10, 0);
 	cout << " ";
-	Set_location(50, 26);
+	Set_location(50, length);
 	cout << " ";
-	for (i = 1; i<26; i++)
+	for (i = 1; i<length; i++)
 	{
 		Set_location(0, i);
 		cout << WSymbol;
-		Set_location(56, i);
+		Set_location(width, i);
 		cout << WSymbol;
 	}
 	Set_location(0, 20);
 	cout << " ";
-	Set_location(56, 6);
+	Set_location(width, 6);
 	cout << " ";
 	Creat_obs(o, 30);
 }
@@ -217,49 +216,6 @@ void pause()
 	}
 }
 
-void Start()
-{
-	system("mode con cols=100 lines=30");
-	
-	int i;
-	for (i = 33; i<60; i += 2)
-	{
-		Set_location(i, 10);
-		cout << WSymbol;
-		Set_location(i, 14);
-		cout << WSymbol;
-	}
-	for (i = 10; i<15; i++)
-	{
-		Set_location(33, i);
-		cout << WSymbol;
-		Set_location(61, i);
-		cout << WSymbol;
-	}
-	Set_location(40, 12);
-	cout << "Games--Greedy Snake" << endl;
-	system("pause>nul");
-	system("cls");
-	Set_location(30, 12);
-	cout << "control the snake using";
-	Set_location(30, 13);
-	cout<< "up, down, left, right" << endl;
-	Set_location(30, 14);
-	cout << "The snake can go through the barrier."<<endl;
-	system("pause>nul");
-	system("cls");
-	Set_location(30, 12);
-	cout<< "Would you like to set symbol?"<<endl;
-	Set_location(30, 13);
-	cout<<"(type y for yes or anything else for no.)";
-	char crl;
-	cin>>crl;
-	if( crl=='y' ) SetSymbol();
-	system("cls");
-	creatMap();
-	Initial();
-	creat_food();
-}
 void Playing()
 {
 	Set_location(64, 15);
@@ -274,7 +230,7 @@ void Playing()
 	Yellow_color();
 	cout << "Snake can go through tunnel";
 	Set_location(64, 19);
-	cout<<" can't crash barrier."<<endl;
+	cout<<" can't crash obstacle."<<endl;
 	Set_location(64, 20);
 	Yellow_color();
 	cout << "ESC:exit; space:pause" << endl;
@@ -301,8 +257,8 @@ void Playing()
 			end_condition = 3;
 			break;
 		}
-		Sleep(200);
-		head->Move();
+		Sleep(int(1000/speed));
+		if( !head->Move() ) break;
 	}
 }
 
@@ -329,12 +285,16 @@ void Die()
 	else if (end_condition == 4)
 	{
 		Yellow_color();
-		cout << "You crash the barrier!";
+		cout << "You crash the obstacle!";
 	}
 	Set_location(30, 13);
 	Yellow_color();
 	cout << "Score: " << score << endl;
 	system("pause>nul");
-    exit(0);
-    
+	system("cls");
+	Set_location(30, 12);
+	cout<< "Resart?(y)";
+	char ctrl;
+	cin>>ctrl;
+	if(ctrl != 'y') exit(0);
 }

@@ -1,9 +1,13 @@
-#include "Function.h"
+#include "Menu.h"
 
 int main()
 {
 	srand((unsigned)time(NULL));
-	Start();
-	Playing();
+	while(1)
+	{
+		White_color();
+		Start();
+		Playing();
+	}
 	return 0;
 }

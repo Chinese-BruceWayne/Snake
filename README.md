@@ -13,5 +13,10 @@
 
 5. srand函数调用入口置于main函数内，防止随机数表在生成.o文件时生成
 
+6. 重新组织文件结构，加入Menu.h, Menu.cpp
+
+7. 加入更改字符、游戏长宽、速度菜单
+
+8. 完成设置字符长宽速度函数，并提示现有状态
 
 <a href=https://www.bilibili.com/video/av23424491/>bilibili演示视频</a>

@@ -1,4 +1,3 @@
-
 #pragma once
 #include"Snake.h"
 #include<iostream>
@@ -22,19 +21,55 @@ extern Obstacle o[30];
 extern char SSymbol;
 extern char FSymbol;
 extern char WSymbol;
+extern double speed;
 
-inline void Green_color();
-inline void Red_color();
-inline void Yellow_color();
-inline void White_color();
+inline void Green_color()
+{                               
+	HANDLE hOut;
+	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hOut,
+		FOREGROUND_GREEN |
+		FOREGROUND_INTENSITY);
+}
+
+inline void Red_color()
+{
+	HANDLE hOut;
+	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hOut,
+		FOREGROUND_RED |
+		FOREGROUND_INTENSITY);
+}
+
+inline void Yellow_color()
+{
+	HANDLE hOut;
+	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hOut,
+		FOREGROUND_RED |
+		FOREGROUND_GREEN |
+		FOREGROUND_INTENSITY);
+}
+
+inline void White_color()
+{
+	HANDLE hOut;
+	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hOut,
+		FOREGROUND_RED |
+		FOREGROUND_GREEN |
+		FOREGROUND_BLUE |
+		FOREGROUND_INTENSITY);
+}
 
 void Set_location(int x, int y);
 void Creat_obs(Obstacle o[], int n);
 void SetSymbol();
+void SetWL();
+void SetSpeed();
 void Initial();
 void creat_food();
 void creatMap();
 void pause();
-void Start();
 void Playing();
 void Die();
