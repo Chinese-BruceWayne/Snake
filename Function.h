@@ -1,5 +1,5 @@
 #pragma once
-#include"Snake.h"
+#include "MapInfo.h"
 #include<iostream>
 #include<stdlib.h>
 #include<time.h>
@@ -11,65 +11,35 @@ using namespace std;
 #define LEFT 4
 #define RIGHT 3
 
+extern long long *Map;
 extern Snake *head,*food;
 extern Snake *q;
 extern int condition;
 extern int end_condition;
 extern int score;
 extern int add;
-extern Obstacle o[30];
+extern Obstacle *o;
+extern int olen;
 extern char SSymbol;
 extern char FSymbol;
 extern char WSymbol;
 extern double speed;
+extern double accel;
+extern int width, length;
 
-inline void Green_color()
-{                               
-	HANDLE hOut;
-	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(hOut,
-		FOREGROUND_GREEN |
-		FOREGROUND_INTENSITY);
-}
-
-inline void Red_color()
-{
-	HANDLE hOut;
-	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(hOut,
-		FOREGROUND_RED |
-		FOREGROUND_INTENSITY);
-}
-
-inline void Yellow_color()
-{
-	HANDLE hOut;
-	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(hOut,
-		FOREGROUND_RED |
-		FOREGROUND_GREEN |
-		FOREGROUND_INTENSITY);
-}
-
-inline void White_color()
-{
-	HANDLE hOut;
-	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(hOut,
-		FOREGROUND_RED |
-		FOREGROUND_GREEN |
-		FOREGROUND_BLUE |
-		FOREGROUND_INTENSITY);
-}
+void Green_color();
+void Red_color();
+void Yellow_color();
+void White_color();
 
 void Set_location(int x, int y);
-void Creat_obs(Obstacle o[], int n);
 void SetSymbol();
 void SetWL();
 void SetSpeed();
-void Initial();
+void SetWindowsSize(int x,int y);
+void PrintMap();
+void SetMap();
+
 void creat_food();
-void creatMap();
 void pause();
-void Playing();
 void Die();

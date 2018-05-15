@@ -1,9 +1,12 @@
 #pragma once
+
+
 class Snake
 {
 public:
 	friend void creat_food();
-	friend void Initial(); 
+	friend bool isSnakePos(Snake *head, int x, int y);
+	friend void creatSnake();
 	
 	int Get_x();
 	int Get_y();
@@ -22,3 +25,6 @@ struct Obstacle
 	int x;
 	int y;
 };
+
+bool isSnakePos(Snake *head, int x, int y);
+bool isObstractPos(Obstacle *o, int olen, int x, int y);

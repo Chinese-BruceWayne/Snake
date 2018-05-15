@@ -1,5 +1,4 @@
 #include"Function.h"
-
 int Snake::Get_x()
 {
 	return s_x;
@@ -32,7 +31,7 @@ bool Snake::Bite_self()
 
 bool Snake::Can_not_crowall()
 {
-	for (int i = 0; i < 30; i++)
+	for (int i = 0; i < olen; i++)
 	{
 		if (head->s_x == o[i].x && head->s_y == o[i].y)
 		{
@@ -232,4 +231,24 @@ bool Snake::Move()
 		return false;
 	}
 	return true;
+}
+
+bool isSnakePos(Snake *head, int x, int y)
+{
+	Snake *q = head;
+	while (q->next != NULL)
+	{
+		if (q->s_x == x && q->s_y == y) 
+			return true;
+		q = q->next;
+	}
+	return false;
+}
+
+bool isObstractPos(Obstacle *o, int olen, int x, int y)
+{
+	for (int i = 0; i < olen; i++)
+		if (o[i].x == x && o[i].y == y)
+			return true;
+	return false;
 }

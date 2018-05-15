@@ -1,18 +1,59 @@
 #include"Function.h"
 
+long long *Map = MapBit2;
 Snake *head, *food;
 Snake *q;
 int condition;
 int end_condition = 0;
 int score = 0, add = 1;
-Obstacle o[30];
+Obstacle *o;
+int olen;
 char SSymbol = 'O';
 char FSymbol = 'o';
 char WSymbol = 'H';
 double speed = 10;
+double accel = 0.5;
 int length = 26;
-int width = 56;
+int width = 29;
 
+void Green_color()
+{                               
+	HANDLE hOut;
+	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hOut,
+		FOREGROUND_GREEN |
+		FOREGROUND_INTENSITY);
+}
+
+void Red_color()
+{
+	HANDLE hOut;
+	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hOut,
+		FOREGROUND_RED |
+		FOREGROUND_INTENSITY);
+}
+
+void Yellow_color()
+{
+	HANDLE hOut;
+	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hOut,
+		FOREGROUND_RED |
+		FOREGROUND_GREEN |
+		FOREGROUND_INTENSITY);
+}
+
+void White_color()
+{
+	HANDLE hOut;
+	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hOut,
+		FOREGROUND_RED |
+		FOREGROUND_GREEN |
+		FOREGROUND_BLUE |
+		FOREGROUND_INTENSITY);
+}
 
 void Set_location(int x, int y)
 {
@@ -22,51 +63,6 @@ void Set_location(int x, int y)
 	cd.Y = y;
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(hOut, cd);
-}
-
-void Creat_obs(Obstacle o[], int n)
-{
-	int a = 14, b = 24, c = 8, d = 40, e = 32, f = 10;
-	for (int i = 0; i < 6; i++)
-	{
-		o[i].x = a;
-		a += 2;
-		o[i].y = c;
-	}
-	a = 15; b = 24; c = 8; d = 40; e = 32; f = 10;
-	for (int i = 6; i < 15; i++)
-	{
-		o[i].x = b;
-		o[i].y = c++;
-	}
-	a = 15; b = 23; c = 8; d = 40; e = 10; f = 17;
-	for (int i = 15; i < 20; i++)
-	{
-		o[i].x = e;
-		e += 2;
-		o[i].y = f;
-		f++;
-	}
-	a = 15; b = 23; c = 8; d = 40; e = 32; f = 13;
-	for (int i = 20; i < length; i++)
-	{
-		o[i].x = d;
-		o[i].y = f;
-		f++;
-	}
-	a = 15; b = 23; c = 8; d = 40; e = 44; f = 4;
-	for (int i = length; i < 30; i++)
-	{
-		o[i].x = e;
-		e -= 2;
-		o[i].y = f;
-	}
-	a = 15; b = 23; c = 8; d = 40; e = 32; f = 10;
-	for (int i = 0; i < 30; i++)
-	{
-		Set_location(o[i].x, o[i].y);
-		cout << WSymbol;
-	}
 }
 
 void SetSymbol()
@@ -115,95 +111,73 @@ void SetSpeed()
 	cout<<"Please chose a speed:";
 	cin>>speed;
 	Set_location(30, 14);
-	cout<<"You have correctly set speed.";
+	cout<<"Current acceleration:"<<accel<<endl;
+	Set_location(30, 15);
+	cout<<"Please chose a accel:";
+	cin>>accel;
+	Set_location(30, 16);
+	cout<<"You have correctly set speed and acceleration.";
 	system("pause>nul");
 	system("cls");
 }
 
-void Initial()
+void SetWindowsSize(int x,int y)
 {
-	Snake *tail;
-	int i;
-	tail = new Snake;
-	head = tail;
-	head->s_x = 24;
-	head->s_y = 5;
-	head->next = NULL;
-	for (i = 1; i <= 4; i++)
-	{
-		head = new Snake;
-		head->next = tail;
-		head->s_x = 24 + 2 * i;
-		head->s_y = 5;
-		tail = head;
-	}
-	while (tail->next != NULL)
-	{
-		Set_location(tail->s_x, tail->s_y);
-		Green_color();
-		cout << SSymbol;
-		tail = tail->next;
-	}
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SMALL_RECT windowSize = {0, 0, x, y};
+    SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
 }
 
-void creat_food()
+void PrintMap()
 {
-	Snake *food_1;
-	food_1 = new Snake;
-	do{
-		food_1->s_x = (rand() % 52) + 1;
-	}while ((food_1->s_x % 2) != 0);
-	food_1->s_y = (rand() % 24) + 1;
-	q = head;
-	while (q->next != NULL)
-	{
-		if (q->s_x == food_1->s_x && q->s_y == food_1->s_y) 
-		{
-			delete food_1;
-			creat_food();
-		}
-		q = q->next;
-	}
-	for (int i = 0; i < 30; i++)
-	{
-		if (o[i].x == food_1->s_x && o[i].y == food_1->s_y)
-		{
-			delete food_1;
-			creat_food();
-		}
-	}
-	Set_location(food_1->s_x, food_1->s_y);
-	food = food_1;
-	Red_color();
-	cout << FSymbol;
+	system("cls");
+	SetWindowsSize((2*width-1)+50,length);
+	Set_location(1, 1);
+	cout<< "Current Map as show below:" <<endl;
+	for(int i=0; i<width; ++i)
+		for(int j=0; j<length; ++j)
+			if(ReadMapPoint(Map,i,j))
+			{
+				Set_location(2*i, 2+j);
+				cout<< WSymbol;
+			}
+	system("pause>nul");
+	system("cls");
 }
 
-void creatMap()
+void SetMap()
 {
-	int i;
-	for (i = 0; i<width+2; i += 2)
+	int pos = 0;
+	system("cls");
+	while(1)
 	{
-		Set_location(i, 0);
-		cout << WSymbol;
-		Set_location(i, length);
-		cout << WSymbol;
+		cin.sync();
+		if(GetAsyncKeyState(VK_RETURN)){}
+		Sleep(200);
+		system("cls");
+		Set_location(30, 12);
+		cout<<"Set Map0"<<endl;
+		Set_location(30, 13);
+		cout<<"Set Map1"<<endl;
+		Set_location(30, 14);
+		cout<<"Set Map2"<<endl;
+		Set_location(30, 15);
+		cout<<"confirm"<<endl;
+		if (GetAsyncKeyState(VK_UP) && pos>0) pos--;
+		else if (GetAsyncKeyState(VK_DOWN) && pos<3) pos++;
+		else if (GetAsyncKeyState(VK_RETURN))
+		{
+			cin.ignore(1);
+			if(pos == 0) Map = MapBit0, PrintMap();
+			else if(pos == 1) Map = MapBit1, PrintMap();
+			else if(pos == 2) Map = MapBit2, PrintMap();
+			else if(pos == 3) break;
+		}
+		Set_location(60, (12+pos));
+		cout<<"enter";
 	}
-	Set_location(10, 0);
-	cout << " ";
-	Set_location(50, length);
-	cout << " ";
-	for (i = 1; i<length; i++)
-	{
-		Set_location(0, i);
-		cout << WSymbol;
-		Set_location(width, i);
-		cout << WSymbol;
-	}
-	Set_location(0, 20);
-	cout << " ";
-	Set_location(width, 6);
-	cout << " ";
-	Creat_obs(o, 30);
+	system("pause>nul");
+	system("cls");
 }
 
 void pause()
@@ -216,50 +190,24 @@ void pause()
 	}
 }
 
-void Playing()
+void creat_food()
 {
-	Set_location(64, 15);
-	Yellow_color();
-	cout << "No wall crash. No self-crash." << endl;
-	Set_location(64, 16);
-	Yellow_color();
-	cout << "control the snake using"<<endl;
-	Set_location(64, 17);
-	cout<<"up, down, left, right" << endl;
-	Set_location(64, 18);
-	Yellow_color();
-	cout << "Snake can go through tunnel";
-	Set_location(64, 19);
-	cout<<" can't crash obstacle."<<endl;
-	Set_location(64, 20);
-	Yellow_color();
-	cout << "ESC:exit; space:pause" << endl;
-	while (1)
-	{
-		Set_location(64, 10);
-		Yellow_color();
-		cout << "Score=" << score;
-		Set_location(64, 11);
-		Yellow_color();
-		cout << "food: " << add << " score";
-		if (GetAsyncKeyState(VK_UP) && condition != DOWN)
-			condition = UP;
-		else if (GetAsyncKeyState(VK_DOWN) && condition != UP)
-			condition = DOWN;
-		else if (GetAsyncKeyState(VK_LEFT) && condition != RIGHT)
-			condition = LEFT;
-		else if (GetAsyncKeyState(VK_RIGHT) && condition != LEFT)
-			condition = RIGHT;
-		else if (GetAsyncKeyState(VK_SPACE))
-			pause();
-		else if (GetAsyncKeyState(VK_ESCAPE))
-		{
-			end_condition = 3;
-			break;
-		}
-		Sleep(int(1000/speed));
-		if( !head->Move() ) break;
+	int x,y;
+	do{
+		do{
+			x = (rand() % (width*2-7)) + 2;
+		}while ((x % 2) != 0);
+		y = (rand() % (length-2) ) + 1;
 	}
+	while( isSnakePos(head,x,y) || isObstractPos(o,olen,x,y) );
+
+	Snake *food_1;
+	food_1 = new Snake;
+	food_1->s_x = x, food_1->s_y = y;
+	Set_location(x, y);
+	food = food_1;
+	Red_color();
+	cout << FSymbol;
 }
 
 void Die()
@@ -293,7 +241,7 @@ void Die()
 	system("pause>nul");
 	system("cls");
 	Set_location(30, 12);
-	cout<< "Resart?(y)";
+	cout<< "Restart?(y)";
 	char ctrl;
 	cin>>ctrl;
 	if(ctrl != 'y') exit(0);
