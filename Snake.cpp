@@ -1,4 +1,21 @@
-#include"Function.h"
+#include"Snake.h"
+
+Snake *head, *food;
+Snake *q;
+int condition;
+int end_condition = 0;
+double speed = 10;
+double accel = 0.5;
+Obstacle *o;
+int olen;
+
+int score = 0, add = 1;
+char SSymbol = 'O';
+char FSymbol = 'o';
+char WSymbol = 'H';
+int length = 26;
+int width = 29;
+
 int Snake::Get_x()
 {
 	return s_x;
@@ -245,10 +262,67 @@ bool isSnakePos(Snake *head, int x, int y)
 	return false;
 }
 
+
+void creat_food()
+{
+	int x,y;
+	do{
+		do{
+			x = (rand() % (width*2-7)) + 2;
+		}while ((x % 2) != 0);
+		y = (rand() % (length-2) ) + 1;
+	}
+	while( isSnakePos(head,x,y) || isObstractPos(o,olen,x,y) );
+
+	Snake *food_1;
+	food_1 = new Snake;
+	food_1->s_x = x, food_1->s_y = y;
+	Set_location(x, y);
+	food = food_1;
+	Red_color();
+	cout << FSymbol;
+}
+
 bool isObstractPos(Obstacle *o, int olen, int x, int y)
 {
 	for (int i = 0; i < olen; i++)
 		if (o[i].x == x && o[i].y == y)
 			return true;
 	return false;
+}
+void Die()
+{
+	system("cls");
+	Set_location(30, 12);
+	if (end_condition == 1)
+	{
+		Yellow_color();
+		cout << "Crash the wall!";
+	}
+	else if (end_condition == 2)
+	{
+		Yellow_color();
+		cout << "Bite yourself!";
+	}
+
+	else if (end_condition == 3)
+	{
+		Yellow_color();
+		cout << "End by player.";
+	}
+	else if (end_condition == 4)
+	{
+		Yellow_color();
+		cout << "You crash the obstacle!";
+	}
+	Set_location(30, 13);
+	Yellow_color();
+	cout << "Score: " << score << endl;
+	system("pause>nul");
+	system("cls");
+	Set_location(30, 12);
+	cout<< "Restart?(y)";
+	char ctrl;
+	cin>>ctrl;
+	if(ctrl != 'y') exit(0);
 }

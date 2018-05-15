@@ -3,6 +3,8 @@
 
 **c++ 大作业**
 
+## 功能实现
+
 1. 修复食物初始化x值极大bug
 
 2. 除去按任意键继续中文标识
@@ -37,4 +39,19 @@
 
 17. 加入SetMap函数
 
-<a href=https://www.bilibili.com/video/av23440462/>bilibili演示视频</a>
+## 文件组织
+
+下表中文件，从左向右次序调用。列中列举出包含的函数实现。
+
+|Menu.h      |Function.h  |MapInfo.h     |Snake.h        |Basic.h|
+|:----------:|:----------:|:------------:|:-------------:|:--------------:|
+|Start()     |SetSymbol() |Map           |Snake          |Set_location()  |
+|Menus()     |SetWL()     |ReadMapPoint()|Obstacle       |SetWindowsSize()|
+|creatSnake()|SetSpeed()  |ReadMap()     |isSnakePos()   |Green_color()   |
+|creatMap()  |SetMap()    |:------------:|isObstaclePos()|Red_color()     |
+|Playing()   |creat_food()|:------------:|:-------------:|Yellow_color()  |
+|:----------:|Die()       |:------------:|:-------------:|White_color()   |
+
+## 演示视频
+
+<a href=https://www.bilibili.com/video/av23469785/>bilibili演示视频</a>

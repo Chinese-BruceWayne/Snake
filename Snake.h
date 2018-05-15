@@ -1,5 +1,5 @@
 #pragma once
-
+#include "basic.h"
 
 class Snake
 {
@@ -26,5 +26,24 @@ struct Obstacle
 	int y;
 };
 
+extern Snake *head,*food;
+extern Snake *q;
+extern int condition;
+extern int end_condition;
+extern double speed;
+extern double accel;
+extern Obstacle *o;
+extern int olen;
+
+
+extern int score;
+extern int add;
+extern char SSymbol;
+extern char FSymbol;
+extern char WSymbol;
+extern int width, length;
+
+void creat_food();
 bool isSnakePos(Snake *head, int x, int y);
 bool isObstractPos(Obstacle *o, int olen, int x, int y);
+void Die();
